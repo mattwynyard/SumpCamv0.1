@@ -29,8 +29,9 @@
         private void InitializeComponent()
         {
             this.boxPicture = new System.Windows.Forms.PictureBox();
-            this.btnPicture = new System.Windows.Forms.Button();
             this.btnIntialise = new System.Windows.Forms.Button();
+            this.btnClick = new System.Windows.Forms.Button();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.boxPicture)).BeginInit();
             this.SuspendLayout();
             // 
@@ -39,26 +40,15 @@
             this.boxPicture.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.boxPicture.Location = new System.Drawing.Point(27, 12);
             this.boxPicture.Name = "boxPicture";
-            this.boxPicture.Size = new System.Drawing.Size(1087, 622);
+            this.boxPicture.Size = new System.Drawing.Size(640, 480);
             this.boxPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.boxPicture.TabIndex = 0;
             this.boxPicture.TabStop = false;
             // 
-            // btnPicture
-            // 
-            this.btnPicture.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnPicture.Location = new System.Drawing.Point(1131, 525);
-            this.btnPicture.Name = "btnPicture";
-            this.btnPicture.Size = new System.Drawing.Size(188, 109);
-            this.btnPicture.TabIndex = 1;
-            this.btnPicture.Text = "Click";
-            this.btnPicture.UseVisualStyleBackColor = true;
-            this.btnPicture.Click += new System.EventHandler(this.btnPicture_Click);
-            // 
             // btnIntialise
             // 
             this.btnIntialise.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnIntialise.Location = new System.Drawing.Point(1162, 379);
+            this.btnIntialise.Location = new System.Drawing.Point(705, 12);
             this.btnIntialise.Name = "btnIntialise";
             this.btnIntialise.Size = new System.Drawing.Size(128, 50);
             this.btnIntialise.TabIndex = 2;
@@ -66,13 +56,36 @@
             this.btnIntialise.UseVisualStyleBackColor = true;
             this.btnIntialise.Click += new System.EventHandler(this.btnIntialise_Click);
             // 
+            // btnClick
+            // 
+            this.btnClick.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnClick.Location = new System.Drawing.Point(702, 437);
+            this.btnClick.Name = "btnClick";
+            this.btnClick.Size = new System.Drawing.Size(131, 55);
+            this.btnClick.TabIndex = 3;
+            this.btnClick.Text = "Click";
+            this.btnClick.UseVisualStyleBackColor = true;
+            this.btnClick.Click += new System.EventHandler(this.BtnClick_Click);
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(728, 125);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(114, 17);
+            this.checkBox1.TabIndex = 4;
+            this.checkBox1.Text = "Image De-npoising";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.CheckBox1_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1349, 695);
+            this.ClientSize = new System.Drawing.Size(1035, 541);
+            this.Controls.Add(this.checkBox1);
+            this.Controls.Add(this.btnClick);
             this.Controls.Add(this.btnIntialise);
-            this.Controls.Add(this.btnPicture);
             this.Controls.Add(this.boxPicture);
             this.Name = "Form1";
             this.Text = "Form1";
@@ -85,8 +98,9 @@
         #endregion
 
         private System.Windows.Forms.PictureBox boxPicture;
-        private System.Windows.Forms.Button btnPicture;
         private System.Windows.Forms.Button btnIntialise;
+        private System.Windows.Forms.Button btnClick;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }
 

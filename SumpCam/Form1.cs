@@ -12,20 +12,27 @@ using Emgu.CV.Structure;
 using Emgu.CV.CvEnum;
 using System.IO;
 using System.Drawing.Imaging;
+using System.Threading;
 
 namespace SumpCam
 {
     public partial class Form1 : Form
     {
-
+        public delegate void UpdateUIDelegate(Image image);
         VideoCapture mCapture;
         Boolean play = false;
+        int mHeight;
+        int mWidth;
 
         public Form1()
         {
             InitializeComponent();
-            intialize();
 
+        }
+
+        public void Form1_Load(object sender, EventArgs e)
+        {
+            
         }
 
         public void intialize()
@@ -40,13 +47,6 @@ namespace SumpCam
                                              MessageBoxButtons.OK,
                                              MessageBoxIcon.Information);
 
-                // If the no button was pressed ...
-                if (result == DialogResult.OK)
-                {
-                    openStream(mCapture);
-                    //Close();
-
-                }
             } else
             {
                 const string message = "Video capture is closed";
@@ -62,21 +62,53 @@ namespace SumpCam
                     //Close();
                 }
             }
+            mHeight = mCapture.Height;
+            mWidth = mCapture.Width;
+            double fps = mCapture.GetCaptureProperty(CapProp.Fps);
+            double exposure = mCapture.GetCaptureProperty(CapProp.Exposure);
+            double frameCount = mCapture.GetCaptureProperty(CapProp.FrameCount);
+            double contrast = mCapture.GetCaptureProperty(CapProp.Contrast);
+            double brightness = mCapture.GetCaptureProperty(CapProp.Brightness);
+
+            getFrame();
 
         }
 
-        public void openStream(VideoCapture capture)
+        public void getFrame()
         {
-            //Boolean grab = mCapture.Grab();
-            int height = mCapture.Height;
-            int width = mCapture.Width;
-            Boolean grab = mCapture.Grab();
-            Mat frame = new Mat(height, width, DepthType.Cv8U, 3);
-            mCapture.Read(frame);
-            Image<Bgr, Byte> image = frame.ToImage<Bgr, Byte>();
-            boxPicture.Image = ImageFromEMGUImage(image);
-            
+            Task.Factory.StartNew(() =>
+            {
 
+                while (mCapture != null)
+                {
+                    Mat frame = new Mat(mHeight, mWidth, DepthType.Cv8U, 3);
+                    mCapture.Read(frame);
+                                   
+                    Image<Bgr, Byte> image = frame.ToImage<Bgr, Byte>();
+                    Image img = ImageFromEMGUImage(image);
+                    SetPicture(img);
+                    Thread.Sleep(100);
+                }
+            });
+            
+        }
+
+
+
+        private void SetPicture(Image img)
+        {
+            if (boxPicture.InvokeRequired)
+            {
+                boxPicture.Invoke(new MethodInvoker(
+                delegate ()
+                {
+                    boxPicture.Image = img;
+                }));
+            }
+            else
+            {
+                boxPicture.Image = img;
+            }
         }
 
         public static Image ImageFromEMGUImage(Image<Bgr, Byte> image)
@@ -90,24 +122,30 @@ namespace SumpCam
             return Image.FromStream(ms);
         }
 
-        private void btnPicture_Click(object sender, EventArgs e)
-        {
-            if (play)
-            {
-                play = false;
-                return;
-            } else
-            {
-                play = true;
-            }
-            
-
-        }
+        
 
         private void btnIntialise_Click(object sender, EventArgs e)
         {
-            
-            openStream(mCapture);
+            intialize();
+        }
+
+        private void BtnClick_Click(object sender, EventArgs e)
+        {
+            Task.Factory.StartNew(() =>
+            {
+                Mat frame = new Mat(mHeight, mWidth, DepthType.Cv8U, 3);
+                mCapture.Read(frame);
+                Mat dst = new Mat(mHeight, mWidth, DepthType.Cv8U, 3);
+                CvInvoke.FastNlMeansDenoisingColored(frame, dst, 1, 5);
+                Image<Bgr, Byte> image = dst.ToImage<Bgr, Byte>();
+                Image img = ImageFromEMGUImage(image);
+                img.Save("C:\\Onsite\\SumpCam\\temp\\test.jpg", ImageFormat.Jpeg);
+            });
+        }
+
+        private void CheckBox1_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
